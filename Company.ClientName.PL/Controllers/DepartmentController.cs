@@ -52,5 +52,13 @@ namespace Company.ClientName.PL.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            var department = _departmentRepository.Get(id.Value);
+
+            return View(department);
+        }
     }
 }
