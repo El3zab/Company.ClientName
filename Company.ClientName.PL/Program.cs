@@ -1,3 +1,8 @@
+using Company.ClientName.BLL.Interfaces;
+using Company.ClientName.BLL.Repositories;
+using Company.ClientName.DAL.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace Company.ClientName.PL
 {
     public class Program
@@ -8,6 +13,12 @@ namespace Company.ClientName.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews(); // Register Built-in MVC Services
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // Allow DI For DepartmentRepository That Object againest IDepartmentRepository As Refrence
+            builder.Services.AddDbContext<CompanyDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection")); // Configuration Represent any Object"Configration" Inside appsettings.json
+                //options.UseSqlServer(builder.Configuration["DefaultConection"]); // As Dictionary Get Value To Key [ DefaultConection ]
+            }); // Allow DI For CompanyDbContext
 
             var app = builder.Build();
 
@@ -31,6 +42,8 @@ namespace Company.ClientName.PL
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+            // Only Layer That Bulid Due To It Have Main Method [Install EF Tools Here]
         }
     }
 }
