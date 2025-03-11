@@ -14,6 +14,8 @@ namespace Company.ClientName.PL
             // Add services to the container.
             builder.Services.AddControllersWithViews(); // Register Built-in MVC Services
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // Allow DI For DepartmentRepository That Object againest IDepartmentRepository As Refrence
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  // Allow DI For EmployeeRepository
+
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection")); // Configuration Represent any Object"Configration" Inside appsettings.json
