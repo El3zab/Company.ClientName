@@ -10,6 +10,13 @@
 <br />
 <br />
 
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
+{
+    <div class="m-3 alert alert-success">
+        <p>@TempData["Message"]</p>
+    </div>
+}
+
 <a asp-action="Create" asp-controller="Department" class="btn btn-primary">Create Department</a>
 
 <br />
