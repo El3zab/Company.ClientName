@@ -47,6 +47,7 @@ namespace Company.ClientName.PL.Controllers
                 var count = _departmentRepository.Add(department);
                 if (count > 0)
                 {
+                    TempData["Message"] = "Department Is Created !!";
                     return RedirectToAction(nameof(Index));
                 }
             }

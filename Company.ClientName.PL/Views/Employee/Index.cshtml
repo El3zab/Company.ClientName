@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    //string? ViewDataMessage = ViewData["Message"] as string; // Must Casting From Object TO ... 
+    //string? ViewBagMessage = ViewBag.Message; // Dynamic [More Flexable]
 }
 
 <h1>All Employee</h1>
@@ -9,6 +12,22 @@
 
 <br />
 <br />
+
+@* <div class="m-3 alert alert-danger">
+    <p>@ViewData["Message"]</p>
+</div> *@
+
+@* <div class="m-3 alert alert-danger">
+    <p>@ViewBag.Message</p>
+</div> *@
+
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
+{
+    <div class="m-3 alert alert-success">
+        <p>@TempData["Message"]</p>
+    </div>
+}
+
 
 <a asp-action="Create" asp-controller="Employee" class="btn btn-primary">Create Employee</a>
 
@@ -30,6 +49,7 @@
                 <th>IsDeleted</th>
                 <th>@Html.DisplayNameFor(E => E.HiringDate)</th>
                 <th>@Html.DisplayNameFor(E => E.CreateAt)</th>
+                <th>Department</th>
                 <th>Details</th>
                 <th>Update</th>
                 <th>Delete</th>
@@ -49,6 +69,11 @@
                     <td>@item.IsDeleted</td>
                     <td>@item.HiringDate</td>
                     <td>@item.CreateAt</td>
+                    @if(item.Department is null) {
+                        <td>No Department</td>
+                    }else {
+                        <td>@item.Department.Name</td>
+                    }
                     <partial name="_ButtonPartialView" model="@item.Id"/>
                 </tr>
             }

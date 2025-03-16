@@ -8,11 +8,12 @@ namespace Company.ClientName.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _EmployeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-       
-        public EmployeeController(IEmployeeRepository EmployeeRepository)
+        public EmployeeController(IEmployeeRepository EmployeeRepository, IDepartmentRepository departmentRepository)
         {
             _EmployeeRepository = EmployeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
         [HttpGet] 
@@ -20,6 +21,14 @@ namespace Company.ClientName.PL.Controllers
         {
             var employees = _EmployeeRepository.GetAll();
 
+            //// Dictionary : 3 Property
+            //// 1. ViewData : Transfer Extra Information From Controller (Action) To Veiw
+            //ViewData["Message"] = "Hello From ViewData";
+
+            //// 2. ViewBag  : Transfer Extra Information From Controller (Action) To Veiw
+            //ViewBag.Message = new { Message = "Hello From ViewBag"};
+
+            //// 3. TempData : Has One Requst LifeTime [ Send Or Save Value Per Request ]
 
             return View(employees);
         }
@@ -27,6 +36,9 @@ namespace Company.ClientName.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var departments = _departmentRepository.GetAll();
+            ViewData["departments"] = departments;
+
             return View();
         }
 
@@ -46,11 +58,13 @@ namespace Company.ClientName.PL.Controllers
                     IsActive = model.IsActive,
                     IsDeleted = model.IsDeleted,
                     Phone = model.Phone,
-                    Salary = model.Salary
+                    Salary = model.Salary,
+                    DepartmentId = model.DepartmentId
                 };
                 var count = _EmployeeRepository.Add(employee);
                 if (count > 0)
                 {
+                    TempData["Message"] = "Employee Is Created !!";
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -71,6 +85,9 @@ namespace Company.ClientName.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            var departments = _departmentRepository.GetAll();
+            ViewData["departments"] = departments;
+
             if (id is null) return BadRequest("Invalid Id"); // 400
 
             var employee = _EmployeeRepository.Get(id.Value);
@@ -87,7 +104,8 @@ namespace Company.ClientName.PL.Controllers
                 IsActive = employee.IsActive,
                 IsDeleted = employee.IsDeleted,
                 Phone = employee.Phone,
-                Salary = employee.Salary
+                Salary = employee.Salary, 
+                DepartmentId = employee.DepartmentId
             };
 
             return View(employeeDto);
@@ -113,7 +131,8 @@ namespace Company.ClientName.PL.Controllers
                     IsActive = model.IsActive,
                     IsDeleted = model.IsDeleted,
                     Phone = model.Phone,
-                    Salary = model.Salary
+                    Salary = model.Salary,
+                    DepartmentId = model.DepartmentId
                 };
 
                 var count = _EmployeeRepository.Update(employee);
