@@ -17,9 +17,16 @@ namespace Company.ClientName.PL.Controllers
         }
 
         [HttpGet] 
-        public IActionResult Index()
+        public IActionResult Index(string? SearchInput)
         {
-            var employees = _EmployeeRepository.GetAll();
+            IEnumerable<Employee> employees;
+            if (string.IsNullOrEmpty(SearchInput))
+            {
+                employees = _EmployeeRepository.GetAll();
+            }else
+            {
+                employees = _EmployeeRepository.GetByName(SearchInput);
+            }
 
             //// Dictionary : 3 Property
             //// 1. ViewData : Transfer Extra Information From Controller (Action) To Veiw
