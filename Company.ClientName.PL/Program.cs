@@ -1,6 +1,8 @@
 using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.BLL.Repositories;
 using Company.ClientName.DAL.Data.Contexts;
+using Company.ClientName.PL.Mapping;
+using Company.ClientName.PL.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.ClientName.PL
@@ -20,7 +22,21 @@ namespace Company.ClientName.PL
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection")); // Configuration Represent any Object"Configration" Inside appsettings.json
                 //options.UseSqlServer(builder.Configuration["DefaultConection"]); // As Dictionary Get Value To Key [ DefaultConection ]
-            }); // Allow DI For CompanyDbContext
+            }); // Allow DI For CompanyDbContext [Scoped Life Time] (Can Be Converted To Singleton)
+
+            builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+            builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+
+            // Allow Dependency Injection By: (If Service Not a Package) [Difference In Life Time]
+            //builder.Services.AddScoped();     // Create Object Life Time Per Request - UnReachable Object
+            //builder.Services.AddTransient();  // Create Object Life Time Per Operation
+            //builder.Services.AddSingleton();  // Create Object Life Time Per Application
+
+
+            //builder.Services.AddScoped<IScopedService, ScopedService>(); // Per Request
+            //builder.Services.AddTransient<ITransiantService, TransiantService>(); // Per Operation
+            //builder.Services.AddSingleton<ISingletonService, SingletonService>(); // Per Application
+
 
             var app = builder.Build();
 
