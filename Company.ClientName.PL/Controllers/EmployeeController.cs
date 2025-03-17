@@ -1,4 +1,5 @@
-﻿using Company.ClientName.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,18 @@ namespace Company.ClientName.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _EmployeeRepository;
-        private readonly IDepartmentRepository _departmentRepository;
+        //private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository EmployeeRepository, IDepartmentRepository departmentRepository)
+        public EmployeeController(
+            IEmployeeRepository EmployeeRepository, 
+            //IDepartmentRepository departmentRepository,
+            IMapper mapper
+            )
         {
             _EmployeeRepository = EmployeeRepository;
-            _departmentRepository = departmentRepository;
+            //_departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
 
         [HttpGet] 
@@ -43,8 +50,8 @@ namespace Company.ClientName.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var departments = _departmentRepository.GetAll();
-            ViewData["departments"] = departments;
+            //var departments = _departmentRepository.GetAll();
+            //ViewData["departments"] = departments;
 
             return View();
         }
@@ -54,9 +61,10 @@ namespace Company.ClientName.PL.Controllers
         {
             if (ModelState.IsValid) 
             {
+                //// Manual Mapping [Auto-Mapper]
                 var employee = new Employee()
                 {
-                    Name = model.Name,
+                    Name = model.EmpName,
                     Address = model.Address,
                     Age = model.Age,
                     CreateAt = model.CreateAt,
@@ -68,6 +76,9 @@ namespace Company.ClientName.PL.Controllers
                     Salary = model.Salary,
                     DepartmentId = model.DepartmentId
                 };
+
+                //var employee = _mapper.Map<Employee>(model);
+
                 var count = _EmployeeRepository.Add(employee);
                 if (count > 0)
                 {
@@ -92,8 +103,8 @@ namespace Company.ClientName.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var departments = _departmentRepository.GetAll();
-            ViewData["departments"] = departments;
+            //var departments = _departmentRepository.GetAll();
+            //ViewData["departments"] = departments;
 
             if (id is null) return BadRequest("Invalid Id"); // 400
 
@@ -102,7 +113,7 @@ namespace Company.ClientName.PL.Controllers
 
             var employeeDto = new CreateEmployeeDto()
             {
-                Name = employee.Name,
+                EmpName = employee.Name,
                 Address = employee.Address,
                 Age = employee.Age,
                 CreateAt = employee.CreateAt,
@@ -111,9 +122,11 @@ namespace Company.ClientName.PL.Controllers
                 IsActive = employee.IsActive,
                 IsDeleted = employee.IsDeleted,
                 Phone = employee.Phone,
-                Salary = employee.Salary, 
+                Salary = employee.Salary,
                 DepartmentId = employee.DepartmentId
             };
+
+            //var dto = _mapper.Map<CreateEmployeeDto>(employee);
 
             return View(employeeDto);
         }
@@ -129,7 +142,7 @@ namespace Company.ClientName.PL.Controllers
                 var employee = new Employee()
                 {
                     Id = id,
-                    Name = model.Name,
+                    Name = model.EmpName,
                     Address = model.Address,
                     Age = model.Age,
                     CreateAt = model.CreateAt,
@@ -141,6 +154,8 @@ namespace Company.ClientName.PL.Controllers
                     Salary = model.Salary,
                     DepartmentId = model.DepartmentId
                 };
+
+                //var employee = _mapper.Map<Employee>(model);
 
                 var count = _EmployeeRepository.Update(employee);
                 if (count > 0) return RedirectToAction(nameof(Index));
