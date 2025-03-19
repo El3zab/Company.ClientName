@@ -8,21 +8,17 @@ namespace Company.ClientName.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        //private readonly IEmployeeRepository _EmployeeRepository;
+        private readonly IEmployeeRepository _EmployeeRepository;
         //private readonly IDepartmentRepository _departmentRepository;
         private readonly IMapper _mapper;
 
         public EmployeeController(
-            //IEmployeeRepository EmployeeRepository, 
+            IEmployeeRepository EmployeeRepository, 
             //IDepartmentRepository departmentRepository,
-            IUnitOfWork unitOfWork,
             IMapper mapper
             )
         {
-            _unitOfWork = unitOfWork;
-            //_EmployeeRepository = EmployeeRepository;
+            _EmployeeRepository = EmployeeRepository;
             //_departmentRepository = departmentRepository;
             _mapper = mapper;
         }
@@ -33,10 +29,10 @@ namespace Company.ClientName.PL.Controllers
             IEnumerable<Employee> employees;
             if (string.IsNullOrEmpty(SearchInput))
             {
-                employees = _unitOfWork.EmployeeRepository.GetAll();
+                employees = _EmployeeRepository.GetAll();
             }else
             {
-                employees = _unitOfWork.EmployeeRepository.GetByName(SearchInput);
+                employees = _EmployeeRepository.GetByName(SearchInput);
             }
 
             //// Dictionary : 3 Property
@@ -67,8 +63,7 @@ namespace Company.ClientName.PL.Controllers
             {
                 var employee = _mapper.Map<Employee>(model);
 
-                _unitOfWork.EmployeeRepository.Add(employee);
-                var count = _unitOfWork.Complete();
+                var count = _EmployeeRepository.Add(employee);
                 if (count > 0)
                 {
                     TempData["Message"] = "Employee Is Created !!";
@@ -83,7 +78,7 @@ namespace Company.ClientName.PL.Controllers
         {
             if (id is null) return BadRequest("Invalid Id"); // 400
 
-            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
+            var employee = _EmployeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 
             var dto = _mapper.Map<CreateEmployeeDto>(employee);
@@ -105,8 +100,7 @@ namespace Company.ClientName.PL.Controllers
                 var employee = _mapper.Map<Employee>(model);
                 employee.Id = id;
 
-                _unitOfWork.EmployeeRepository.Update(employee);
-                var count = _unitOfWork.Complete();
+                var count = _EmployeeRepository.Update(employee);
                 if (count > 0) return RedirectToAction(nameof(Index));
             }
 
@@ -127,8 +121,7 @@ namespace Company.ClientName.PL.Controllers
             {
                 var employee = _mapper.Map<Employee>(model);
                 employee.Id = id;
-                _unitOfWork.EmployeeRepository.Delete(employee);
-                var count = _unitOfWork.Complete();
+                var count = _EmployeeRepository.Delete(employee);
                 if (count > 0) return RedirectToAction(nameof(Index));
             }
 

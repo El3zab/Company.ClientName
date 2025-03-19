@@ -15,10 +15,8 @@ namespace Company.ClientName.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews(); // Register Built-in MVC Services
-            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // Allow DI For DepartmentRepository That Object againest IDepartmentRepository As Refrence
-            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  // Allow DI For EmployeeRepository
-
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // Allow DI For DepartmentRepository That Object againest IDepartmentRepository As Refrence
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  // Allow DI For EmployeeRepository
 
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
@@ -26,7 +24,7 @@ namespace Company.ClientName.PL
                 //options.UseSqlServer(builder.Configuration["DefaultConection"]); // As Dictionary Get Value To Key [ DefaultConection ]
             }); // Allow DI For CompanyDbContext [Scoped Life Time] (Can Be Converted To Singleton)
 
-            //builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+            builder.Services.AddAutoMapper(typeof(EmployeeProfile));
             builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
 
             builder.Services.AddAutoMapper(typeof(DepartmentProfile));

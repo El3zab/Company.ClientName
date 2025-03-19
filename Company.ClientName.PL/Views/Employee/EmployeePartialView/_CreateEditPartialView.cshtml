@@ -1,9 +1,9 @@
 ﻿@model CreateEmployeeDto
-@inject IUnitOfWork _unitOfWork;
+@inject IDepartmentRepository _departmentRepository
 
 @{
     // var Departments = new SelectList(ViewData["departments"] as IEnumerable<Department>,"Id","Name");
-    var Departments = new SelectList(_unitOfWork.DepartmentRepository.GetAll(), nameof(Department.Id), nameof(Department.Name));
+    var Departments = new SelectList(_departmentRepository.GetAll(), nameof(Department.Id), nameof(Department.Name));
 
 }
 
