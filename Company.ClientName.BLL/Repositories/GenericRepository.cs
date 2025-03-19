@@ -34,43 +34,19 @@ namespace Company.ClientName.BLL.Repositories
 
         }
 
-        public int Add(T model)
+        public void Add(T model)
         {
             _context.Set<T>().Add(model);
-            return _context.SaveChanges();
         }
 
-        public int Update(T model)
+        public void Update(T model)
         {
             _context.Set<T>().Update(model);
-            return _context.SaveChanges();
         }
 
-        public int Delete(T model)
+        public void Delete(T model)
         {
-            //if (typeof(T) == typeof(Employee))
-            //{
-            //    var employee = _context.Set<Employee>().Find(model.Id);
-
-            //    if (employee != null)
-            //    {
-            //        _context.Employees.Include(E => E.Department); 
-            //        _context.Set<Employee>().Remove(employee); 
-            //        return _context.SaveChanges();
-            //    }
-            //}
-
-            //_context.Set<T>().Remove(model);
-            //return _context.SaveChanges();
-
-            //if (typeof(T) == typeof(Employee))
-            //{
-            //    var employee = _context.Entry(Employee).Reference(E => E.Department).Load();
-            //    employee.Remove(model);
-            //    return _context.SaveChanges();
-            //}
             _context.Set<T>().Remove(model);
-            return _context.SaveChanges();
         }
     }
 }
