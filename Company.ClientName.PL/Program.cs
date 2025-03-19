@@ -27,6 +27,8 @@ namespace Company.ClientName.PL
             builder.Services.AddAutoMapper(typeof(EmployeeProfile));
             builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
 
+            builder.Services.AddAutoMapper(typeof(DepartmentProfile));
+
             // Allow Dependency Injection By: (If Service Not a Package) [Difference In Life Time]
             //builder.Services.AddScoped();     // Create Object Life Time Per Request - UnReachable Object
             //builder.Services.AddTransient();  // Create Object Life Time Per Operation

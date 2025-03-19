@@ -23,7 +23,7 @@ namespace Company.ClientName.PL.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet] 
+        [HttpGet]
         public IActionResult Index(string? SearchInput)
         {
             IEnumerable<Employee> employees;
@@ -61,23 +61,7 @@ namespace Company.ClientName.PL.Controllers
         {
             if (ModelState.IsValid) 
             {
-                //// Manual Mapping [Auto-Mapper]
-                var employee = new Employee()
-                {
-                    Name = model.EmpName,
-                    Address = model.Address,
-                    Age = model.Age,
-                    CreateAt = model.CreateAt,
-                    HiringDate = model.HiringDate,
-                    Email = model.Email,
-                    IsActive = model.IsActive,
-                    IsDeleted = model.IsDeleted,
-                    Phone = model.Phone,
-                    Salary = model.Salary,
-                    DepartmentId = model.DepartmentId
-                };
-
-                //var employee = _mapper.Map<Employee>(model);
+                var employee = _mapper.Map<Employee>(model);
 
                 var count = _EmployeeRepository.Add(employee);
                 if (count > 0)
@@ -86,7 +70,7 @@ namespace Company.ClientName.PL.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View();
+            return View(model);
         }
 
         [HttpGet]
@@ -97,71 +81,30 @@ namespace Company.ClientName.PL.Controllers
             var employee = _EmployeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 
-            return View(viewName, employee);
+            var dto = _mapper.Map<CreateEmployeeDto>(employee);
+            return View(viewName, dto);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            //var departments = _departmentRepository.GetAll();
-            //ViewData["departments"] = departments;
-
-            if (id is null) return BadRequest("Invalid Id"); // 400
-
-            var employee = _EmployeeRepository.Get(id.Value);
-            if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
-
-            var employeeDto = new CreateEmployeeDto()
-            {
-                EmpName = employee.Name,
-                Address = employee.Address,
-                Age = employee.Age,
-                CreateAt = employee.CreateAt,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                IsActive = employee.IsActive,
-                IsDeleted = employee.IsDeleted,
-                Phone = employee.Phone,
-                Salary = employee.Salary,
-                DepartmentId = employee.DepartmentId
-            };
-
-            //var dto = _mapper.Map<CreateEmployeeDto>(employee);
-
-            return View(employeeDto);
+            return Details(id,"Edit");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, CreateEmployeeDto model)
+        public IActionResult Edit([FromRoute] int id, CreateEmployeeDto model, string viewName = "Edit")
         {
             if (ModelState.IsValid)
             {
-                //if (id != model.Id) return BadRequest(); // 400
-
-                var employee = new Employee()
-                {
-                    Id = id,
-                    Name = model.EmpName,
-                    Address = model.Address,
-                    Age = model.Age,
-                    CreateAt = model.CreateAt,
-                    HiringDate = model.HiringDate,
-                    Email = model.Email,
-                    IsActive = model.IsActive,
-                    IsDeleted = model.IsDeleted,
-                    Phone = model.Phone,
-                    Salary = model.Salary,
-                    DepartmentId = model.DepartmentId
-                };
-
-                //var employee = _mapper.Map<Employee>(model);
+                var employee = _mapper.Map<Employee>(model);
+                employee.Id = id;
 
                 var count = _EmployeeRepository.Update(employee);
                 if (count > 0) return RedirectToAction(nameof(Index));
             }
 
-            return View(model);
+            return View(viewName , model);
         }
 
         [HttpGet]
@@ -172,17 +115,17 @@ namespace Company.ClientName.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id, Employee model)
+        public IActionResult Delete([FromRoute] int id, CreateEmployeeDto model)
         {
             if (ModelState.IsValid)
             {
-                if (id != model.Id) return BadRequest(); // 400
-
-                var count = _EmployeeRepository.Delete(model);
+                var employee = _mapper.Map<Employee>(model);
+                employee.Id = id;
+                var count = _EmployeeRepository.Delete(employee);
                 if (count > 0) return RedirectToAction(nameof(Index));
             }
 
-            return View(model);
+        return View(model);
         }
     }
 }
