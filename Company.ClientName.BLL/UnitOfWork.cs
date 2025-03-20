@@ -1,4 +1,5 @@
 ﻿using Company.ClientName.BLL.Interfaces;
+using Company.ClientName.BLL.Repositories;
 using Company.ClientName.DAL.Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.ClientName.BLL.Repositories
+namespace Company.ClientName.BLL
 {
     public class UnitOfWork : IUnitOfWork
     {

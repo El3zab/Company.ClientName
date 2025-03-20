@@ -2,6 +2,7 @@
 using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Dtos;
+using Company.ClientName.PL.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.ClientName.PL.Controllers
@@ -65,6 +66,9 @@ namespace Company.ClientName.PL.Controllers
         {
             if (ModelState.IsValid) 
             {
+                if(model.Image is not null)
+                    model.ImageName = DocumentSetting.UploadFile(model.Image, "images");
+
                 var employee = _mapper.Map<Employee>(model);
 
                 _unitOfWork.EmployeeRepository.Add(employee);
@@ -102,6 +106,11 @@ namespace Company.ClientName.PL.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.ImageName is not null && model.Image is not null)
+                    DocumentSetting.DeleteFile(model.ImageName, "images");
+                if (model.Image is not null)
+                    model.ImageName = DocumentSetting.UploadFile(model.Image, "images");
+
                 var employee = _mapper.Map<Employee>(model);
                 employee.Id = id;
 
@@ -129,7 +138,12 @@ namespace Company.ClientName.PL.Controllers
                 employee.Id = id;
                 _unitOfWork.EmployeeRepository.Delete(employee);
                 var count = _unitOfWork.Complete();
-                if (count > 0) return RedirectToAction(nameof(Index));
+                if (count > 0)
+                {
+                    if (model.ImageName is not null)
+                        DocumentSetting.DeleteFile(model.ImageName, "images");
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
         return View(model);

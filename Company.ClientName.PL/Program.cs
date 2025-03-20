@@ -1,5 +1,5 @@
+using Company.ClientName.BLL;
 using Company.ClientName.BLL.Interfaces;
-using Company.ClientName.BLL.Repositories;
 using Company.ClientName.DAL.Data.Contexts;
 using Company.ClientName.PL.Mapping;
 using Company.ClientName.PL.Services;
