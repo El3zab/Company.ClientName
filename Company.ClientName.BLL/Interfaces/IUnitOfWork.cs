@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Company.ClientName.BLL.Interfaces
 {
-    public interface IUnitOfWork : IAsyncDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IDepartmentRepository DepartmentRepository { get; }
         IEmployeeRepository EmployeeRepository { get; }
 
-        Task<int> CompleteAsync();
+        int Complete();
     }
 }
