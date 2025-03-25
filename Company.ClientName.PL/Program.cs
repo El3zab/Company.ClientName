@@ -46,6 +46,10 @@ namespace Company.ClientName.PL
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                              .AddEntityFrameworkStores<CompanyDbContext>();
 
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = "/Account/SignIn";
+            });
 
             var app = builder.Build();
 
@@ -62,6 +66,7 @@ namespace Company.ClientName.PL
 
             app.UseRouting();
 
+            app.UseAuthorization();
             app.UseAuthorization();
 
             app.MapControllerRoute(

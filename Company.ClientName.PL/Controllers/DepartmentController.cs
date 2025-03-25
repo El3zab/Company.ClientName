@@ -3,12 +3,14 @@ using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.BLL.Repositories;
 using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Company.ClientName.PL.Controllers
 {
     // MVC Controller
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
