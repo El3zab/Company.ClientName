@@ -115,6 +115,7 @@ namespace Company.ClientName.PL.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(SignIn));
+
         }
 
 
