@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Company.ClientName.PL.Models;
 using Company.ClientName.PL.Services;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Company.ClientName.PL.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

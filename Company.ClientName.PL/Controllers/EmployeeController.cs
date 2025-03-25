@@ -3,11 +3,13 @@ using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Dtos;
 using Company.ClientName.PL.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Company.ClientName.PL.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
