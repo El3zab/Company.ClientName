@@ -1,8 +1,10 @@
 using Company.ClientName.BLL;
 using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.DAL.Data.Contexts;
+using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Mapping;
 using Company.ClientName.PL.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.ClientName.PL
@@ -40,6 +42,9 @@ namespace Company.ClientName.PL
             //builder.Services.AddScoped<IScopedService, ScopedService>(); // Per Request
             //builder.Services.AddTransient<ITransiantService, TransiantService>(); // Per Operation
             //builder.Services.AddSingleton<ISingletonService, SingletonService>(); // Per Application
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                             .AddEntityFrameworkStores<CompanyDbContext>();
 
 
             var app = builder.Build();
