@@ -45,6 +45,29 @@ namespace Company.ClientName.PL.Controllers
             return View(roles);
         }
 
+        public async Task<IActionResult> Search(string? SearchInput)
+        {
+            IEnumerable<RoleToReturnDto> roles;
+            if (string.IsNullOrEmpty(SearchInput))
+            {
+                roles = _roleManager.Roles.Select(U => new RoleToReturnDto()
+                {
+                    Id = U.Id,
+                    Name = U.Name
+                });
+            }
+            else
+            {
+                roles = _roleManager.Roles.Select(U => new RoleToReturnDto()
+                {
+                    Id = U.Id,
+                    Name = U.Name
+                }).Where(R => R.Name.ToLower().Contains(SearchInput.ToLower()));
+            }
+
+            return PartialView("RolePartialView/RoleTablePartialView", roles);
+        }
+
         [HttpGet]
         public IActionResult Create()
         {

@@ -48,6 +48,38 @@ namespace Company.ClientName.PL.Controllers
             return View(users);
         }
 
+        public async Task<IActionResult> Search(string? SearchInput)
+        {
+            IEnumerable<UserToReturnDto> users;
+            if (string.IsNullOrEmpty(SearchInput))
+            {
+                users = _userManager.Users.Select(U => new UserToReturnDto()
+                {
+                    Id = U.Id,
+                    UserName = U.UserName,
+                    Email = U.Email,
+                    FristName = U.FristName,
+                    LastName = U.LastName,
+                    Roles = _userManager.GetRolesAsync(U).Result
+                });
+            }
+            else
+            {
+                users = _userManager.Users.Select(U => new UserToReturnDto()
+                {
+                    Id = U.Id,
+                    UserName = U.UserName,
+                    Email = U.Email,
+                    FristName = U.FristName,
+                    LastName = U.LastName,
+                    Roles = _userManager.GetRolesAsync(U).Result
+                }).Where(U => U.FristName.ToLower().Contains(SearchInput.ToLower()));
+            }
+
+
+            return PartialView("UserPartialView/UserTablePartialView", users);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Details(string? id, string viewName = "Details")
         {
