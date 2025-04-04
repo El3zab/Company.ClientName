@@ -1,6 +1,7 @@
 ﻿using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Dtos;
 using Company.ClientName.PL.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Company.ClientName.PL.Controllers
 {
+   
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -131,6 +133,7 @@ namespace Company.ClientName.PL.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete([FromRoute] string id, RoleToReturnDto model)
         {

@@ -1,6 +1,7 @@
 ﻿using Company.ClientName.DAL.Models;
 using Company.ClientName.PL.Dtos;
 using Company.ClientName.PL.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -107,6 +108,7 @@ namespace Company.ClientName.PL.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete([FromRoute] string id, UserToReturnDto model)
         {

@@ -55,6 +55,7 @@ namespace Company.ClientName.PL
             builder.Services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = "/Account/SignIn";
+                //config.AccessDeniedPath = "/Account/AccessDenied";
             });
 
             var app = builder.Build();

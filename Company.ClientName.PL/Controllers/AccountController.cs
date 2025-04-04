@@ -189,6 +189,12 @@ namespace Company.ClientName.PL.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         #endregion
 
         #region Reset Password
