@@ -2,6 +2,8 @@ using Company.ClientName.BLL;
 using Company.ClientName.BLL.Interfaces;
 using Company.ClientName.DAL.Data.Contexts;
 using Company.ClientName.DAL.Models;
+using Company.ClientName.PL.Helpers;
+using Company.ClientName.PL.Helpers.InterfacesHelpers;
 using Company.ClientName.PL.Mapping;
 using Company.ClientName.PL.Services;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +34,9 @@ namespace Company.ClientName.PL
             builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
 
             builder.Services.AddAutoMapper(typeof(DepartmentProfile));
+
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+            builder.Services.AddScoped<IMailService, MailServices>();
 
             // Allow Dependency Injection By: (If Service Not a Package) [Difference In Life Time]
             //builder.Services.AddScoped();     // Create Object Life Time Per Request - UnReachable Object
