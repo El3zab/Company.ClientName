@@ -7,7 +7,51 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Company.ClientName.PL.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-custom {
+            background-color: #343a40;
+        }
+
+            .navbar-custom .nav-link,
+            .navbar-custom .navbar-brand {
+                color: #ffffff;
+            }
+
+                .navbar-custom .nav-link:hover {
+                    color: #ffc107;
+                }
+
+        
+        .footer {
+            background-color: #343a40;
+            color: #ccc;
+        }
+
+            .footer a {
+                color: #ffc107;
+            }
+
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+
+        .container main {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+    </style>
 </head>
+
+
+
 <body>
    
 
@@ -43,7 +87,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light btn btn-danger" asp-area="" asp-controller="Account" asp-action="SignOut">Sign Out</a>
+                            <a class=" btn btn-outline-danger ms-2" asp-area="" asp-controller="Account" asp-action="SignOut">Sign Out</a>
                         </li>
                     </ul>
                 </div>
@@ -63,7 +107,7 @@
     @*End Body*@
 
     @*Start Footer*@
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted mt-auto text-center">
         <div class="container">
             &copy; @DateTime.UtcNow.Year - Company.ClientName.PL - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
