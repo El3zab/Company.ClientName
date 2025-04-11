@@ -5,6 +5,16 @@
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
+<style>
+	.wthree-text {
+		margin-top: 15px;
+	}
+
+	.checkbox {
+		margin-right: 8px;
+	}
+</style>
+
 <div class="main-agileinfo">
 	<div class="agileits-top">
 		<div asp-validation-summary="All" class="m-3 alert alert-info"></div>
@@ -24,7 +34,7 @@
 			</div>
 			<input type="submit" value="SIGNUP">
 		</form>
-		<p>Don't have an Account? <a asp-action="SignIn"> Login Now!</a></p>
+		<p>Have an Account? <a asp-action="SignIn"> Login Now!</a></p>
 	</div>
 </div>
 
